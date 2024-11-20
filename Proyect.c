@@ -1,4 +1,18 @@
 #include "ripes_system.h"
+//cambios de la vicki
+#define SW0 (0x01) // Control izquierda
+#define SW1 (0x02) // Control arriba
+#define SW2 (0x04) // Control derecha
+#define SW3 (0x08) // Control abajo#define SW0 (0x01) // Control izquierda
+#define SW1 (0x02) // Control arriba
+#define SW2 (0x04) // Control derecha
+#define SW3 (0x08) // Control abajo#define SW0 (0x01) // Control izquierda
+#define SW1 (0x02) // Control arriba
+#define SW2 (0x04) // Control derecha
+#define SW3 (0x08) // Control abajo#define SW0 (0x01) // Control izquierda
+#define SW1 (0x02) // Control arriba
+#define SW2 (0x04) // Control derecha
+#define SW3 (0x08) // Control abajo
 
 #define SW0 (0x01) // Control izquierda
 #define SW1 (0x02) // Control arriba
