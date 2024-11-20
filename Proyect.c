@@ -1,40 +1,32 @@
 #include "ripes_system.h"
 //cambios de la vicki
-#define SW0 (0x01) // Control izquierda
-#define SW1 (0x02) // Control arriba
-#define SW2 (0x04) // Control derecha
-#define SW3 (0x08) // Control abajo#define SW0 (0x01) // Control izquierda
-#define SW1 (0x02) // Control arriba
-#define SW2 (0x04) // Control derecha
-#define SW3 (0x08) // Control abajo#define SW0 (0x01) // Control izquierda
-#define SW1 (0x02) // Control arriba
-#define SW2 (0x04) // Control derecha
-#define SW3 (0x08) // Control abajo#define SW0 (0x01) // Control izquierda
-#define SW1 (0x02) // Control arriba
-#define SW2 (0x04) // Control derecha
-#define SW3 (0x08) // Control abajo
 
-#define SW0 (0x01) // Control izquierda
-#define SW1 (0x02) // Control arriba
-#define SW2 (0x04) // Control derecha
-#define SW3 (0x08) // Control abajo
+#define LED_MATRIX_0_BASE (0xf0000000)
+#define LED_MATRIX_0_SIZE (0xdac)
+#define LED_MATRIX_0_WIDTH (0x23)
+#define LED_MATRIX_0_HEIGHT (0x19)
 
-volatile unsigned int * led_base = (int) LED_MATRIX_0_BASE;
-/
- Un puntero a la
-  dirección de memoria donde se encuentra la base 
-  de la matriz de LEDs. volatile indica que el valor 
-  en esa dirección de memoria puede cambiar en cualquier 
-  momento, por lo que el compilador no optimiza
-   las lecturas/escrituras./
-volatile unsigned int switch_base = (int) SWITCHES_0_BASE;
-/
-Un puntero a la dirección de memoria de la base de 
-los interruptores. Similar al caso anterior, volatile
- garantiza que siempre
- se lea el valor más reciente de los interruptores.*/
-#define FILAS 8
-#define COLUMNAS 8
+#define SWITCHES_0_BASE (0xf0000dac)
+#define SWITCHES_0_SIZE (0x4)
+#define SWITCHES_0_N (0x8)
+
+#define D_PAD_0_BASE (0xf0000db0)
+#define D_PAD_0_SIZE (0x10)
+#define D_PAD_0_UP_OFFSET (0x0)
+#define D_PAD_0_UP (0xf0000db0)
+#define D_PAD_0_DOWN_OFFSET (0x4)
+#define D_PAD_0_DOWN (0xf0000db4)
+#define D_PAD_0_LEFT_OFFSET (0x8)
+#define D_PAD_0_LEFT (0xf0000db8)
+#define D_PAD_0_RIGHT_OFFSET (0xc)
+#define D_PAD_0_RIGHT (0xf0000dbc)
+
+void set_pixel(unsigned int x, unsigned int y, unsigned int color);
+void create_snake(unsigned int x, unsigned int y);
+void clear_snake(unsigned int x, unsigned int y);
+void move_snake(unsigned int x, unsigned int y);
+void create_apple();
+int check_collision(unsigned int x, unsigned int y);
 
 unsigned int matrizLEDs[FILAS];
 
