@@ -57,8 +57,10 @@ void main() {
     unsigned int key_left_pressed = 0;
     unsigned int key_right_pressed = 0;
 
+    snake[0] = y * WIDTH + x; // Coordenada inicial de la serpiente
     create_snake(x, y);
     create_apple(); // Crea una manzana al inicio del juego
+
 
     while(1) {
         unsigned int prev_x = x;
@@ -88,50 +90,48 @@ void main() {
             clear_snake(prev_x, prev_y);
             move_snake(x, y);
         }
-        if(*up == 0) {
-            key_up_pressed = 0;
-        }
-        if(*down == 0) {
-            key_down_pressed = 0;
-        }
-        if(*left == 0) {
-            key_left_pressed = 0;
-        }
-        if(*right == 0) {
-            key_right_pressed = 0;
-        }
+        if (*up == 0) key_up_pressed = 0;
+        if (*down == 0) key_down_pressed = 0;
+        if (*left == 0) key_left_pressed = 0;
+        if (*right == 0) key_right_pressed = 0;
 
-        // Comprueba la colisión con la manzana
-        if (check_collision(x, y)) {
-            create_apple(); // Crea una nueva manzana si hay colisión
-        }
+        // Comprueba colisión con la manzana
+        check_apple();
     }
 }
 
 void set_pixel(unsigned int x, unsigned int y, unsigned int color) {
-    unsigned int *led_base = (unsigned int *)LED_MATRIX_0_BASE; 
-    unsigned int *address = 0;
-    unsigned int offset = 0;
-    offset = x + (y * LED_MATRIX_0_WIDTH);
-    address = led_base + offset;
+    unsigned int *led_base = (unsigned int *)LED_MATRIX_0_BASE;
+    unsigned int offset = x + (y * WIDTH);
+    unsigned int *address = led_base + offset;
     *(address) = color;
 }
 
 void create_snake(unsigned int x, unsigned int y) {
-    set_pixel(x, y, 0x00ff0000);
-    set_pixel(x + 1, y, 0x00ff0000);
-    set_pixel(x, y + 1, 0x00ff0000);
-    set_pixel(x + 1, y + 1, 0x00ff0000);
-}
+    set_pixel(x, y, 0x00ff0000); // Rojo
+    set_pixel(x + 1, y, 0x00ff0000); // Rojo
+    set_pixel(x, y + 1, 0x00ff0000); //led rojo
+    set_pixel(x + 1, y + 1, 0x00ff0000); //led rojo
+} 
 
-void clear_snake(unsigned int x, unsigned int y) {
-    set_pixel(x, y, 0x00000000);
-    set_pixel(x + 1, y, 0x00000000);
-    set_pixel(x, y + 1, 0x00000000);
-    set_pixel(x + 1, y + 1, 0x00000000);
+void clear_snake_tail() {
+    unsigned int tail_pos = snake[snake_length - 1];
+    unsigned int tail_x = tail_pos % WIDTH;
+    unsigned int tail_y = tail_pos / WIDTH;
+// Limpia el bloque 2x2 de la cola de la serpiente
+    set_pixel(tail_x, tail_y, 0x00000000);
+    set_pixel(tail_x + 1, tail_y, 0x00000000);
+    set_pixel(tail_x, tail_y + 1, 0x00000000);
+    set_pixel(tail_x + 1, tail_y + 1, 0x00000000);
 }
-
 void move_snake(unsigned int x, unsigned int y) {
+    // Mueve el cuerpo de la serpiente
+    for (int i = snake_length - 1; i > 0; i--) {
+        snake[i] = snake[i - 1];
+    }
+    snake[0] = y * WIDTH + x; // Actualiza la cabeza
+
+    // Dibujar la nueva posición de la cabeza (2x2)
     create_snake(x, y);
 }
 
