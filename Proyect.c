@@ -1,5 +1,11 @@
 #include "ripes_system.h"
+#include <stdlib.h> // Para rand() y srand()
+#include <time.h>   // Para inicializar la semilla de rand()
 //cambios de la vicki
+
+#define WIDTH (LED_MATRIX_0_WIDTH)
+#define HEIGHT (LED_MATRIX_0_HEIGHT)
+
 
 #define LED_MATRIX_0_BASE (0xf0000000)
 #define LED_MATRIX_0_SIZE (0xdac)
@@ -20,18 +26,23 @@
 #define D_PAD_0_LEFT (0xf0000db8)
 #define D_PAD_0_RIGHT_OFFSET (0xc)
 #define D_PAD_0_RIGHT (0xf0000dbc)
+// Variables globales
+unsigned int snake[100]; // Coordenadas lineales de la serpiente
+unsigned int snake_length = 1; // Longitud inicial de la serpiente
+unsigned int apple_pos; // Posición de la manzana (lineal)
 
+// Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
 void create_snake(unsigned int x, unsigned int y);
-void clear_snake(unsigned int x, unsigned int y);
+void clear_snake_tail();
 void move_snake(unsigned int x, unsigned int y);
 void create_apple();
-int check_collision(unsigned int x, unsigned int y);
-
-unsigned int apple_x, apple_y;
+void check_apple();
 
 void main() {
-    srand(1); // Inicializa la semilla de rand() con un valor fijo para consistencia
+    srand(time(NULL)); // Inicializa la semilla de rand() con el tiempo actual
+
+
 
     unsigned int *up = (unsigned int *)D_PAD_0_UP;
     unsigned int *down = (unsigned int *)D_PAD_0_DOWN;
