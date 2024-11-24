@@ -136,27 +136,33 @@ void move_snake(unsigned int x, unsigned int y) {
 }
 
 void create_apple() {
-    apple_x = rand() % (LED_MATRIX_0_WIDTH - 1);
-    apple_y = rand() % (LED_MATRIX_0_HEIGHT - 1);
+    do {
+        apple_pos = rand() % (WIDTH * HEIGHT);
+    } while (apple_pos % WIDTH + 1 >= WIDTH || apple_pos + WIDTH >= WIDTH * HEIGHT);
 
-    // Asegura que la manzana esté dentro de los límites de la matriz
-    if (apple_x < 1) apple_x = 1;
-    if (apple_y < 1) apple_y = 1;
+    unsigned int apple_x = apple_pos % WIDTH;
+    unsigned int apple_y = apple_pos / WIDTH;
 
-    // Dibuja la manzana
+    // Dibuja la manzana la manzana (2x2) con LEDs verdes
     set_pixel(apple_x, apple_y, 0x0000ff00);      // Verde
     set_pixel(apple_x + 1, apple_y, 0x0000ff00);  // Verde
     set_pixel(apple_x, apple_y + 1, 0x0000ff00);  // Verde
     set_pixel(apple_x + 1, apple_y + 1, 0x0000ff00); // Verde
 }
 
-int check_collision(unsigned int x, unsigned int y) {
-    // Comprueba si la cabeza de la serpiente (x, y) está en la misma posición que la manzana
-    if ((x == apple_x && y == apple_y) || 
-        (x + 1 == apple_x && y == apple_y) || 
-        (x == apple_x && y + 1 == apple_y) || 
-        (x + 1 == apple_x && y + 1 == apple_y)) {
-        return 1; // Hay colisión
+void check_apple() {
+    // Coordenadas de la cabeza de la serpiente (2x2)
+    unsigned int head_x = snake[0] % WIDTH;
+    unsigned int head_y = snake[0] / WIDTH;
+
+    // Coordenadas de la manzana (2x2)
+    unsigned int apple_x = apple_pos % WIDTH;
+    unsigned int apple_y = apple_pos / WIDTH;
+
+    // Verificar superposición (bloque 2x2)
+    if ((head_x < apple_x + 2 && head_x + 2 > apple_x) &&
+        (head_y < apple_y + 2 && head_y + 2 > apple_y)) {
+        snake_length++; // Incrementar tamaño
+        create_apple();  // Generar una nueva manzana
     }
-    return 0; // No hay colisión
 }
