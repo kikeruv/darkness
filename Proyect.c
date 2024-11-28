@@ -19,7 +19,7 @@
 #define D_PAD_0_DOWN (0xf0000db4)
 #define D_PAD_0_LEFT (0xf0000db8)
 #define D_PAD_0_RIGHT (0xf0000dbc)
-
+//holas
 //Direccion de memoria de los switches
 #define SWITCHES_0_BASE (0xf0000dac) // Dirección base de switches
 #define SWITCH_RESET_BIT 0           // Usamos el switch 0 para reiniciar
