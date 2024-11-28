@@ -3,33 +3,31 @@
 #include <time.h>   // Para inicializar la semilla de rand()
 //cambios de la vicki
 
-#define WIDTH (LED_MATRIX_0_WIDTH)
-#define HEIGHT (LED_MATRIX_0_HEIGHT)
-
-
-#define LED_MATRIX_0_BASE (0xf0000000)
-#define LED_MATRIX_0_SIZE (0xdac)
+//#define WIDTH (LED_MATRIX_0_WIDTH)
+//#define HEIGHT (LED_MATRIX_0_HEIGHT)
+#define LED_MATRIX_0_BASE (0xf0000000) //direccion base de la matriz de LEDS
+//#define LED_MATRIX_0_SIZE (0xdac)
 #define LED_MATRIX_0_WIDTH (0x23)
 #define LED_MATRIX_0_HEIGHT (0x19)
 
-#define SWITCHES_0_BASE (0xf0000dac)
-#define SWITCHES_0_SIZE (0x4)
-#define SWITCHES_0_N (0x8)
+//#define SWITCHES_0_BASE (0xf0000dac)
+//#define SWITCHES_0_SIZE (0x4)
+//#define SWITCHES_0_N (0x8)
 
-#define D_PAD_0_BASE (0xf0000db0)
-#define D_PAD_0_SIZE (0x10)
-#define D_PAD_0_UP_OFFSET (0x0)
+//direcciones de memoria para los botones dpad
 #define D_PAD_0_UP (0xf0000db0)
-#define D_PAD_0_DOWN_OFFSET (0x4)
 #define D_PAD_0_DOWN (0xf0000db4)
-#define D_PAD_0_LEFT_OFFSET (0x8)
 #define D_PAD_0_LEFT (0xf0000db8)
-#define D_PAD_0_RIGHT_OFFSET (0xc)
 #define D_PAD_0_RIGHT (0xf0000dbc)
-// Variables globales
-unsigned int snake[100]; // Coordenadas lineales de la serpiente
-unsigned int snake_length = 1; // Longitud inicial de la serpiente
-unsigned int apple_pos; // Posición de la manzana (lineal)
+
+//Direccion de memoria de los switches
+#define SWITCHES_0_BASE (0xf0000dac) // Dirección base de switches
+#define SWITCH_RESET_BIT 0           // Usamos el switch 0 para reiniciar
+
+#define MAX_PIXELS 100 // Cantidad máxima de píxeles o longitud que puede tener la serpiente
+
+// Intervalo de ciclos para cambiar de posición la serpiente
+#define SNAKE_MOVE_CYCLES 1200
 
 // Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
@@ -41,7 +39,6 @@ void check_apple();
 
 void main() {
     srand(time(NULL)); // Inicializa la semilla de rand() con el tiempo actual
-
 
 
     unsigned int *up = (unsigned int *)D_PAD_0_UP;
