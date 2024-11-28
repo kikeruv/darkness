@@ -19,7 +19,7 @@
 #define D_PAD_0_DOWN (0xf0000db4)
 #define D_PAD_0_LEFT (0xf0000db8)
 #define D_PAD_0_RIGHT (0xf0000dbc)
-//holas
+
 //Direccion de memoria de los switches
 #define SWITCHES_0_BASE (0xf0000dac) // Dirección base de switches
 #define SWITCH_RESET_BIT 0           // Usamos el switch 0 para reiniciar
@@ -49,11 +49,11 @@ unsigned int total_cycles = 0;
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
 void create_snake();
 void clear_tail(Pixel tail);
+int colision_serpiente();
 void create_apple();
-int apple_collision();
-int snake_collision();
-void game_over();
-void reset_game();
+int colision_manzana();
+void perdiste();
+void reset();
 void add_snake_segment(Pixel tail);
 
 void main() {
@@ -70,6 +70,19 @@ void main() {
     snake[0].y = 12;
     snake[1].x = 17; // Cola
     snake[1].y = 12;
+
+    //Segmento de la serpiente
+    snake[0].x = 17; // Cabeza
+    snake[0].y = 12;
+    snake[1].x = 17; // Cola
+    snake[1].y = 12;
+
+    //Creamos la serpiente y la manzana mandando a llamar a las funciones
+    create_snake();
+    create_apple();
+
+    //Corazon(Ciclo principal)
+    
 /**
 // Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
