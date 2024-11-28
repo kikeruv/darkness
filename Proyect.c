@@ -45,6 +45,16 @@ unsigned int apple_x, apple_y; // Posición de la manzana
 unsigned int last_move_cycles = 0;
 unsigned int total_cycles = 0;
 
+// Funciones
+void set_pixel(unsigned int x, unsigned int y, unsigned int color);
+void create_snake();
+void clear_tail(Pixel tail);
+void create_apple();
+int apple_collision();
+int snake_collision();
+void game_over();
+void reset_game();
+void add_snake_segment(Pixel tail);
 /**
 // Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
