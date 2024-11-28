@@ -82,7 +82,34 @@ void main() {
     create_apple();
 
     //Corazon(Ciclo principal)
-    
+    while (1){
+        total_cycles++;
+
+        //Direccion conforme el D_PAD
+         if (*up == 1 && direction != 1) {
+            direction = 0;
+        } else if (*down == 1 && direction != 0) {
+            direction = 1;
+        } else if (*left == 1 && direction != 3) {
+            direction = 2;
+        } else if (*right == 1 && direction != 2) {
+            direction = 3;
+        }
+
+        //verficamos si es tiempo de mover a la serpiente
+        if (total_cycles - last_move_cycles >= SNAKE_MOVE_CYCLES) {
+            last_move_cycles = total_cycles;
+
+            //Guardamos la posicion de la cola
+            if (direction != -1) {
+                Pixel tail = snake[snake_length - 1]; 
+
+                
+            }
+        }
+
+    }
+}
 /**
 // Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
