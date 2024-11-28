@@ -55,6 +55,21 @@ int snake_collision();
 void game_over();
 void reset_game();
 void add_snake_segment(Pixel tail);
+
+void main() {
+    srand(2); // Inicializa la semilla para números aleatorios
+
+    // Punteros de los botones del D_PAD
+    unsigned int *up = (unsigned int *)D_PAD_0_UP;
+    unsigned int *down = (unsigned int *)D_PAD_0_DOWN;
+    unsigned int *left = (unsigned int *)D_PAD_0_LEFT;
+    unsigned int *right = (unsigned int *)D_PAD_0_RIGHT;
+    
+    // Segmento inicial de la serpiente
+    snake[0].x = 17; // Cabeza
+    snake[0].y = 12;
+    snake[1].x = 17; // Cola
+    snake[1].y = 12;
 /**
 // Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
