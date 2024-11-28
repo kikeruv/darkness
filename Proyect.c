@@ -104,7 +104,33 @@ void main() {
             if (direction != -1) {
                 Pixel tail = snake[snake_length - 1]; 
 
-                
+                // Desplaza todos los segmentos de la serpiente
+                for (int i = snake_length - 1; i > 0; i--) {
+                    snake[i] = snake[i - 1];
+                }
+
+                // Actualiza la posición de la cabeza
+                switch (direction) {
+                    case 0: snake[0].y -= 2; break; // Arriba
+                    case 1: snake[0].y += 2; break; // Abajo
+                    case 2: snake[0].x -= 2; break; // Izquierda
+                    case 3: snake[0].x += 2; break; // Derecha
+                }
+
+                //Verificamos las colisiones
+                if (snake[0].x < 0 || snake[0].x >= LED_MATRIX_0_WIDTH || snake[0].y < 0 || snake[0].y >= LED_MATRIX_0_HEIGHT || snake_collision()) {
+                    game_over(); // Termina el juego si hay colisión
+                }
+
+                // Verifica la colision de la mazana
+                if (apple_collision()) {
+                    create_apple();
+                    add_snake_segment(tail);
+                } else {
+                    clear_tail(tail); // Borramos la cola si no come
+                }
+
+                create_snake(); // Volvemos a actualizar la serpiente
             }
         }
 
