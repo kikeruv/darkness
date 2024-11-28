@@ -29,6 +29,23 @@
 // Intervalo de ciclos para cambiar de posición la serpiente
 #define SNAKE_MOVE_CYCLES 1200
 
+// Estructura de los segmentos de la serpiente
+typedef struct {
+    unsigned int x;
+    unsigned int y;
+} Pixel;
+
+Pixel snake[MAX_PIXELS];       // Arreglo que guarda los píxeles de la serpiente
+unsigned int snake_length = 2; // Longitud inicial de la serpiente
+int direction = -1;            // Dirección inicial de la serpiente (-1 = sin movimiento)
+
+unsigned int apple_x, apple_y; // Posición de la manzana
+
+// Variables para controlar los ciclos entre movimientos de la serpiente
+unsigned int last_move_cycles = 0;
+unsigned int total_cycles = 0;
+
+/**
 // Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
 void create_snake(unsigned int x, unsigned int y);
