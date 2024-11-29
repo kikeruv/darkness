@@ -65,15 +65,19 @@ void main() {
     unsigned int *right = (unsigned int *)D_PAD_0_RIGHT;
     
     // Segmento inicial de la serpiente
-    snake[0].x = 17; // Cabeza
+    // Cabeza
+    snake[0].x = 17; 
     snake[0].y = 12;
-    snake[1].x = 17; // Cola
+    // Cola
+    snake[1].x = 17; 
     snake[1].y = 12;
 
     //Segmento de la serpiente
-    snake[0].x = 17; // Cabeza
+    // Cabeza
+    snake[0].x = 17; 
     snake[0].y = 12;
-    snake[1].x = 17; // Cola
+    // Cola
+    snake[1].x = 17; 
     snake[1].y = 12;
 
     //Creamos la serpiente y la manzana mandando a llamar a las funciones
@@ -95,7 +99,7 @@ void main() {
             direction = 3;
         }
 
-        //verficamos si es tiempo de mover a la serpiente
+        //Verficamos si es tiempo de mover a la serpiente
         if (total_cycles - last_move_cycles >= SNAKE_MOVE_CYCLES) {
             last_move_cycles = total_cycles;
 
@@ -150,7 +154,8 @@ int snake_collision() {
 
 // Borra la cola de la serpiente
 void clear_tail(Pixel tail) {
-    set_pixel(tail.x, tail.y, 0x00000000); // Apaga el LED
+    // Apagar LEDS
+    set_pixel(tail.x, tail.y, 0x00000000); 
     set_pixel(tail.x + 1, tail.y, 0x00000000);
     set_pixel(tail.x, tail.y + 1, 0x00000000);
     set_pixel(tail.x + 1, tail.y + 1, 0x00000000);
