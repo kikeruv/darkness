@@ -70,12 +70,13 @@ unsigned int total_cycles = 0;
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
 void create_snake();
 void clear_tail(Pixel tail);
-int colision_serpiente();
 void create_apple();
-int colision_manzana();
-void perdiste();
-void reset();
+int apple_collision();
+int snake_collision();
+void game_over();
+void reset_game();
 void add_snake_segment(Pixel tail);
+
 
 void main() {
     srand(2); // Inicializa la semilla para números aleatorios
@@ -170,6 +171,48 @@ int snake_collision() {
     return 0;
 }
 
+// Función para encender un LED en una posición específica
+void set_pixel(unsigned int x, unsigned int y, unsigned int color) {
+    unsigned int *led_base = (unsigned int *)LED_MATRIX_0_BASE;
+    unsigned int offset = x + (y * LED_MATRIX_0_WIDTH);
+    *(led_base + offset) = color;
+}
+
+// Dibuja la serpiente en la matriz de LEDs
+void create_snake() {
+    for (unsigned int i = 0; i < snake_length; i++) {
+        set_pixel(snake[i].x, snake[i].y, 0x00ff0000); // Rojo
+        set_pixel(snake[i].x + 1, snake[i].y, 0x00ff0000);
+        set_pixel(snake[i].x, snake[i].y + 1, 0x00ff0000);
+        set_pixel(snake[i].x + 1, snake[i].y + 1, 0x00ff0000);
+    }
+}
+
+// Borra la cola de la serpiente
+void clear_tail(Pixel tail) {
+    set_pixel(tail.x, tail.y, 0x00000000); // Apaga el LED
+    set_pixel(tail.x + 1, tail.y, 0x00000000);
+    set_pixel(tail.x, tail.y + 1, 0x00000000);
+    set_pixel(tail.x + 1, tail.y + 1, 0x00000000);
+}
+
+// Crea una nueva manzana en una posición aleatoria
+void create_apple() {
+    apple_x = (rand() % (LED_MATRIX_0_WIDTH / 2)) * 2 + 1;
+    apple_y = (rand() % (LED_MATRIX_0_HEIGHT / 2)) * 2;
+
+    for (unsigned int i = 0; i < snake_length; i++) {
+        if (apple_x == snake[i].x && apple_y == snake[i].y) {
+            create_apple(); // Evita colocar la manzana en el cuerpo
+            return;
+        }
+    }
+
+    set_pixel(apple_x, apple_y, 0x0000ff00); // Verde para la manzana
+    set_pixel(apple_x + 1, apple_y, 0x0000ff00);
+    set_pixel(apple_x, apple_y + 1, 0x0000ff00);
+    set_pixel(apple_x + 1, apple_y + 1, 0x0000ff00);
+}
 
 
 /**
