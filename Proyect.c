@@ -1,15 +1,15 @@
 #include "ripes_system.h"
 #include <stdlib.h> // Para rand() y srand()
-#include <time.h>   // Para inicializar la semilla de rand()
 
+
+
+// Dirección base de la matriz de LEDs
 #define LED_MATRIX_0_BASE (0xf0000000)
+
+// Dimensiones de la matriz de LEDs
 #define LED_MATRIX_0_WIDTH (0x23)
 #define LED_MATRIX_0_HEIGHT (0x19)
 
-volatile unsigned int * led_base = (int) LED_MATRIX_0_BASE;
-
-#define FILAS 8
-#define COLUMNAS 8
 
 
 //direcciones de memoria para los botones d_pad
