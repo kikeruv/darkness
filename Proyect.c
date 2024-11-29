@@ -35,7 +35,7 @@ los interruptores. Similar al caso anterior, volatile
 #define COLUMNAS 8
 >>>>>>> Stashed changes
 
-//direcciones de memoria para los botones dpad
+//direcciones de memoria para los botones dpadw
 #define D_PAD_0_UP (0xf0000db0)
 #define D_PAD_0_DOWN (0xf0000db4)
 #define D_PAD_0_LEFT (0xf0000db8)
@@ -157,6 +157,21 @@ void main() {
 
     }
 }
+
+//Empezamos con las funciones:
+
+//  Funciones pare verificar si choca la cabeza
+int snake_collision() {
+    for (unsigned int i = 1; i < snake_length; i++) {
+        if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+
 /**
 // Prototipos
 void set_pixel(unsigned int x, unsigned int y, unsigned int color);
