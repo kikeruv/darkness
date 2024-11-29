@@ -1,53 +1,30 @@
 #include "ripes_system.h"
 #include <stdlib.h> // Para rand() y srand()
 #include <time.h>   // Para inicializar la semilla de rand()
-//cambios de la vicki
 
-//#define WIDTH (LED_MATRIX_0_WIDTH)
-//#define HEIGHT (LED_MATRIX_0_HEIGHT)
-#define LED_MATRIX_0_BASE (0xf0000000) //direccion base de la matriz de LEDS
-//#define LED_MATRIX_0_SIZE (0xdac)
+#define LED_MATRIX_0_BASE (0xf0000000)
 #define LED_MATRIX_0_WIDTH (0x23)
 #define LED_MATRIX_0_HEIGHT (0x19)
 
-<<<<<<< Updated upstream
-//#define SWITCHES_0_BASE (0xf0000dac)
-//#define SWITCHES_0_SIZE (0x4)
-//#define SWITCHES_0_N (0x8)
-=======
 volatile unsigned int * led_base = (int) LED_MATRIX_0_BASE;
-/*
- Un puntero a la
-  dirección de memoria donde se encuentra la base 
-  de la matriz de LEDs. volatile indica que el valor 
-  en esa dirección de memoria puede cambiar en cualquier 
-  momento, por lo que el compilador no optimiza
-   las lecturas/escrituras./
-volatile unsigned int switch_base = (int) SWITCHES_0_BASE;
-*/
 
-/*
-Un puntero a la dirección de memoria de la base de 
-los interruptores. Similar al caso anterior, volatile
- garantiza que siempre
- se lea el valor más reciente de los interruptores.*/
 #define FILAS 8
 #define COLUMNAS 8
->>>>>>> Stashed changes
 
-//direcciones de memoria para los botones dpadw
+
+//direcciones de memoria para los botones d_pad
 #define D_PAD_0_UP (0xf0000db0)
 #define D_PAD_0_DOWN (0xf0000db4)
 #define D_PAD_0_LEFT (0xf0000db8)
 #define D_PAD_0_RIGHT (0xf0000dbc)
 
 //Direccion de memoria de los switches
-#define SWITCHES_0_BASE (0xf0000dac) // Dirección base de switches
+#define SWITCHES_0_BASE (0xf0000dac) // Direccion base de switches
 #define SWITCH_RESET_BIT 0           // Usamos el switch 0 para reiniciar
 
-#define MAX_PIXELS 100 // Cantidad máxima de píxeles o longitud que puede tener la serpiente
+#define MAX_PIXELS 100 // Cantidad maxima de pixeles o longitud que puede tener la serpiente
 
-// Intervalo de ciclos para cambiar de posición la serpiente
+// Intervalo de ciclos para cambiar de posicion la serpiente
 #define SNAKE_MOVE_CYCLES 1200
 
 // Estructura de los segmentos de la serpiente
@@ -56,11 +33,11 @@ typedef struct {
     unsigned int y;
 } Pixel;
 
-Pixel snake[MAX_PIXELS];       // Arreglo que guarda los píxeles de la serpiente
+Pixel snake[MAX_PIXELS];       // Arreglo que guarda los pixeles de la serpiente
 unsigned int snake_length = 2; // Longitud inicial de la serpiente
-int direction = -1;            // Dirección inicial de la serpiente (-1 = sin movimiento)
+int direction = -1;            // Direccion inicial de la serpiente (-1 = sin movimiento)
 
-unsigned int apple_x, apple_y; // Posición de la manzana
+unsigned int apple_x, apple_y; // Posicion de la manzana
 
 // Variables para controlar los ciclos entre movimientos de la serpiente
 unsigned int last_move_cycles = 0;
@@ -79,7 +56,7 @@ void reset_game();
 
 
 void main() {
-    srand(2); // Inicializa la semilla para números aleatorios
+    srand(2); // Inicializa la semilla para numeros aleatorios
 
     // Punteros de los botones del D_PAD
     unsigned int *up = (unsigned int *)D_PAD_0_UP;
@@ -141,7 +118,7 @@ void main() {
 
                 //Verificamos las colisiones
                 if (snake[0].x < 0 || snake[0].x >= LED_MATRIX_0_WIDTH || snake[0].y < 0 || snake[0].y >= LED_MATRIX_0_HEIGHT || snake_collision()) {
-                    game_over(); // Termina el juego si hay colisión
+                    game_over(); // Termina el juego si hay colision
                 }
 
                 // Verifica la colision de la mazana
@@ -189,14 +166,14 @@ void create_snake() {
     }
 }
 
-// Función para encender un LED en una posición específica
+// Funcion para encender un LED en una posicion especifica
 void set_pixel(unsigned int x, unsigned int y, unsigned int color) {
     unsigned int *led_base = (unsigned int *)LED_MATRIX_0_BASE;
     unsigned int offset = x + (y * LED_MATRIX_0_WIDTH);
     *(led_base + offset) = color;
 }
 
-// Crea una nueva manzana en una posición aleatoria
+// Crea una nueva manzana en una posicion aleatoria
 void create_apple() {
     apple_x = (rand() % (LED_MATRIX_0_WIDTH / 2)) * 2 + 1;
     apple_y = (rand() % (LED_MATRIX_0_HEIGHT / 2)) * 2;
