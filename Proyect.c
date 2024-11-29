@@ -73,9 +73,9 @@ void clear_tail(Pixel tail);
 void create_apple();
 int apple_collision();
 int snake_collision();
+void add_snake_segment(Pixel tail);
 void game_over();
 void reset_game();
-void add_snake_segment(Pixel tail);
 
 
 void main() {
@@ -171,11 +171,12 @@ int snake_collision() {
     return 0;
 }
 
-// Función para encender un LED en una posición específica
-void set_pixel(unsigned int x, unsigned int y, unsigned int color) {
-    unsigned int *led_base = (unsigned int *)LED_MATRIX_0_BASE;
-    unsigned int offset = x + (y * LED_MATRIX_0_WIDTH);
-    *(led_base + offset) = color;
+// Borra la cola de la serpiente
+void clear_tail(Pixel tail) {
+    set_pixel(tail.x, tail.y, 0x00000000); // Apaga el LED
+    set_pixel(tail.x + 1, tail.y, 0x00000000);
+    set_pixel(tail.x, tail.y + 1, 0x00000000);
+    set_pixel(tail.x + 1, tail.y + 1, 0x00000000);
 }
 
 // Dibuja la serpiente en la matriz de LEDs
@@ -188,12 +189,11 @@ void create_snake() {
     }
 }
 
-// Borra la cola de la serpiente
-void clear_tail(Pixel tail) {
-    set_pixel(tail.x, tail.y, 0x00000000); // Apaga el LED
-    set_pixel(tail.x + 1, tail.y, 0x00000000);
-    set_pixel(tail.x, tail.y + 1, 0x00000000);
-    set_pixel(tail.x + 1, tail.y + 1, 0x00000000);
+// Función para encender un LED en una posición específica
+void set_pixel(unsigned int x, unsigned int y, unsigned int color) {
+    unsigned int *led_base = (unsigned int *)LED_MATRIX_0_BASE;
+    unsigned int offset = x + (y * LED_MATRIX_0_WIDTH);
+    *(led_base + offset) = color;
 }
 
 // Crea una nueva manzana en una posición aleatoria
@@ -212,6 +212,55 @@ void create_apple() {
     set_pixel(apple_x + 1, apple_y, 0x0000ff00);
     set_pixel(apple_x, apple_y + 1, 0x0000ff00);
     set_pixel(apple_x + 1, apple_y + 1, 0x0000ff00);
+}
+
+// Verifica si la cabeza colisiona con la manzana
+int apple_collision() {
+    return snake[0].x == apple_x && snake[0].y == apple_y;
+}
+
+// Agrega una parte a la serpiente
+void add_snake_segment(Pixel tail) {
+    if (snake_length < MAX_PIXELS) {
+        snake[snake_length] = tail;
+        snake_length++;
+    }
+}
+
+// Reinicia todas las variables del juego
+void reset_game() {
+    snake_length = 2;
+    direction = -1;
+    // Cabeza
+    snake[0].x = 17; 
+    snake[0].y = 12;
+    // Cola
+    snake[1].x = 17; 
+    snake[1].y = 12;
+
+    last_move_cycles = 0;
+    total_cycles = 0;
+
+    create_snake();
+    create_apple();
+}
+
+// Se termina el juego y se reinicia con el switch 0
+void game_over() {
+    for (unsigned int x = 0; x < LED_MATRIX_0_WIDTH; x++) {
+        for (unsigned int y = 0; y < LED_MATRIX_0_HEIGHT; y++) {
+            set_pixel(x, y, 0x00000000); // Apaga todos los LEDs
+        }
+    }
+
+    unsigned int *switches = (unsigned int *)SWITCHES_0_BASE;
+
+    // Espera a que el switch de reinicio sea activado
+    while (!(*switches & (1 << SWITCH_RESET_BIT))) {
+       
+    }
+
+    reset_game(); // Funcion para reinicia el juego
 }
 
 
