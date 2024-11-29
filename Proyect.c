@@ -10,9 +10,30 @@
 #define LED_MATRIX_0_WIDTH (0x23)
 #define LED_MATRIX_0_HEIGHT (0x19)
 
+<<<<<<< Updated upstream
 //#define SWITCHES_0_BASE (0xf0000dac)
 //#define SWITCHES_0_SIZE (0x4)
 //#define SWITCHES_0_N (0x8)
+=======
+volatile unsigned int * led_base = (int) LED_MATRIX_0_BASE;
+/*
+ Un puntero a la
+  dirección de memoria donde se encuentra la base 
+  de la matriz de LEDs. volatile indica que el valor 
+  en esa dirección de memoria puede cambiar en cualquier 
+  momento, por lo que el compilador no optimiza
+   las lecturas/escrituras./
+volatile unsigned int switch_base = (int) SWITCHES_0_BASE;
+*/
+
+/*
+Un puntero a la dirección de memoria de la base de 
+los interruptores. Similar al caso anterior, volatile
+ garantiza que siempre
+ se lea el valor más reciente de los interruptores.*/
+#define FILAS 8
+#define COLUMNAS 8
+>>>>>>> Stashed changes
 
 //direcciones de memoria para los botones dpad
 #define D_PAD_0_UP (0xf0000db0)
@@ -109,7 +130,7 @@ void main() {
                     snake[i] = snake[i - 1];
                 }
 
-                // Actualiza la posición de la cabeza
+                // Actualiza la posicion de la cabeza
                 switch (direction) {
                     case 0: snake[0].y -= 2; break; // Arriba
                     case 1: snake[0].y += 2; break; // Abajo
